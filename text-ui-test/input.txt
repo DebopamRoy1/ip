@@ -6,4 +6,8 @@ mark 1
 list
 unmark 1
 list
+hello
+deadline project
+event project
+mark 4
 bye
