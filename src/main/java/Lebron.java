@@ -8,8 +8,8 @@ public class Lebron {
 
         //Greeting
         System.out.println(line);
-        System.out.println("Yo yo yo, what's up it's your boy LeBron James haha. ");
-        System.out.println("Building a legacy, one task at a time. What we workin' on today GOAT? ");
+        System.out.println("Yo yo yo, what's up it's your boy LeBron James haha.");
+        System.out.println("Building a legacy, one task at a time. What we workin' on today GOAT?");
         System.out.println(line);
 
         Scanner scanner = new Scanner(System.in);
@@ -44,6 +44,7 @@ public class Lebron {
                 // Mark task as undone
                 int index = Integer.parseInt(input.substring(7)) - 1;
                 tasks[index].markAsUndone();
+                System.out.println(line);
                 System.out.println("Ok, I've marked this task as not done yet. Keep grinding:\n");
                 System.out.println(tasks[index]);
                 System.out.println(line);

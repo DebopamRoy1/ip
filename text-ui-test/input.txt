@@ -1,0 +1,9 @@
+todo borrow book
+deadline return book /by Sunday
+event IHG Takraw Finals /from Wed 9pm /to Wed 11pm
+list
+mark 1
+list
+unmark 1
+list
+bye
