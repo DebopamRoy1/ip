@@ -49,11 +49,30 @@ public class Lebron {
                 System.out.println(line);
             } else {
                 // Add new Task object to the list
-                tasks[taskCount] = new Task(input);
-                taskCount++;
-                System.out.println(line);
-                System.out.println("That's what's up King! Added: " + input);
-                System.out.println(line);
+                Task newTask = null;
+                if (input.startsWith("todo ")) {
+                    newTask = new Todo(input.substring(5));
+                } else if (input.startsWith("deadline ")) {
+                    // Format: deadline [desc] /by [time]
+                    String[] parts = input.substring(9).split(" /by ");
+                    newTask = new Deadline(parts[0], parts[1]);
+                } else if (input.startsWith("event ")) {
+                    // Format: event [desc] /from [time] /to [time]
+                    String[] parts = input.substring(6).split(" /from ");
+                    String[] timeParts = parts[1].split(" /to ");
+                    newTask = new Event(parts[0], timeParts[0], timeParts[1]);
+                }
+
+                if (newTask != null) {
+                    tasks[taskCount] = newTask;
+                    taskCount++;
+                    System.out.println(line);
+                    System.out.println("Got it King, I've added this to the legacy:");
+                    System.out.println("  " + newTask);
+                    System.out.println("Now you have " + taskCount + " tasks in the list. #StayReady");
+                    System.out.println(line);
+
+                }
             }
         }
         scanner.close();
