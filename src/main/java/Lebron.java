@@ -1,10 +1,10 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Lebron {
     private static final String line = "_______________________________________________________________________________";
     public static void main(String[] args) {
-        Task[] tasks = new Task[100];
-        int taskCount = 0;
+        ArrayList<Task> tasks = new ArrayList<>();
 
         //Greeting
         System.out.println(line);
@@ -29,36 +29,41 @@ public class Lebron {
                     // Show the stored list
                     System.out.println(line);
                     System.out.println("Here's how your legacy list is going:");
-                    for (int i = 0; i < taskCount; i++) {
-                        System.out.println((i + 1) + ". " + tasks[i]);
+                    for (int i = 0; i < tasks.size(); i++) {
+                        System.out.println((i + 1) + ". " + tasks.get(i));
                     }
                     System.out.println(line);
                 } else if (input.startsWith("mark")) {
-                    int index = Parser.parseIndex(input, "mark", taskCount);
-                    tasks[index].markAsDone();
+                    int index = Parser.parseIndex(input, "mark", tasks.size());
+                    tasks.get(index).markAsDone();
                     System.out.println(line);
                     System.out.println("Nice! I've marked this as done for the king:");
-                    System.out.println(tasks[index]);
+                    System.out.println(tasks.get(index));
                     System.out.println(line);
                 } else if (input.startsWith("unmark")) {
-                    int index = Parser.parseIndex(input, "unmark", taskCount);
-                    tasks[index].markAsUndone();
+                    int index = Parser.parseIndex(input, "unmark", tasks.size());
+                    tasks.get(index).markAsUndone();
                     System.out.println(line);
                     System.out.println("Ok, I've marked this as not done yet. Keep grinding:");
-                    System.out.println(tasks[index]);
+                    System.out.println(tasks.get(index));
+                    System.out.println(line);
+                } else if (input.startsWith("delete")) {
+                    int index = Parser.parseDeleteIndex(input, tasks.size());
+                    Task removedTask = tasks.remove(index);
+                    System.out.println(line);
+                    System.out.println("Noted. I've benched this task and removed it from the rotation:");
+                    System.out.println(removedTask);
+                    System.out.println("Now you have " + tasks.size() + " tasks in the list. #StayReady");
                     System.out.println(line);
                 } else if (input.startsWith("todo")) {
-                    tasks[taskCount] = Parser.parseTodo(input);
-                    taskCount++;
-                    printAddedMessage(tasks[taskCount - 1], taskCount);
+                    tasks.add(Parser.parseTodo(input));
+                    printAddedMessage(tasks.get(tasks.size() - 1), tasks.size());
                 } else if (input.startsWith("deadline")) {
-                    tasks[taskCount] = Parser.parseDeadline(input);
-                    taskCount++;
-                    printAddedMessage(tasks[taskCount - 1], taskCount);
+                    tasks.add(Parser.parseDeadline(input));
+                    printAddedMessage(tasks.get(tasks.size() - 1), tasks.size());
                 } else if (input.startsWith("event")) {
-                    tasks[taskCount] = Parser.parseEvent(input);
-                    taskCount++;
-                    printAddedMessage(tasks[taskCount - 1], taskCount);
+                    tasks.add(Parser.parseEvent(input));
+                    printAddedMessage(tasks.get(tasks.size() - 1), tasks.size());
                 } else {
                     throw new LebronException("Hol' up... I don't know what '" + input + "' means. Check the playbook!");
                 }

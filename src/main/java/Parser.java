@@ -46,4 +46,16 @@ public class Parser {
             throw new LebronException("You gotta give me a valid number for that " + command + " command!");
         }
     }
+
+    public static int parseDeleteIndex(String input, int currentCount) throws LebronException {
+        try {
+            int index = Integer.parseInt(input.substring(7).trim()) - 1;
+            if (index < 0 || index >= currentCount) {
+                throw new LebronException("That task isn't in the rotation! You only have " + currentCount + " tasks.");
+            }
+            return index;
+        } catch (NumberFormatException | StringIndexOutOfBoundsException e) {
+            throw new LebronException("You gotta tell me the specific number to bench!");
+        }
+    }
 }
