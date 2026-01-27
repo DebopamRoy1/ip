@@ -1,10 +1,18 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.IOException;
 
 public class Lebron {
     private static final String line = "_______________________________________________________________________________";
     public static void main(String[] args) {
+        Storage storage = new Storage("./data/lebron.txt");
         ArrayList<Task> tasks = new ArrayList<>();
+
+        try {
+            tasks = storage.load();
+        } catch (IOException e) {
+            tasks = new ArrayList<>();
+        }
 
         //Greeting
         System.out.println(line);
@@ -67,9 +75,16 @@ public class Lebron {
                 } else {
                     throw new LebronException("Hol' up... I don't know what '" + input + "' means. Check the playbook!");
                 }
+
+                storage.save(tasks);
+
             } catch (LebronException e){
                 System.out.println(line);
                 System.out.println("ANDDDD ONEE: " + e.getMessage());
+                System.out.println(line);
+            } catch (IOException e) {
+                System.out.println(line);
+                System.out.println("FOUL: I couldn't save your legacy to the disk!");
                 System.out.println(line);
             }
         }
