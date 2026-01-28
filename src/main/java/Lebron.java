@@ -2,11 +2,23 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.IOException;
 
+/**
+ * Main class for the LeBron chatbot, a task tracking system.
+ * This class coordinates the user interface, command parsing and data persistence.
+ */
 public class Lebron {
-    private static final String line = "_______________________________________________________________________________";
+    private static final String line =
+            "_______________________________________________________________________________";
+
+    /**
+     * The main entry point for the LeBron chatbot.
+     * Initialises storage, loads existing tasks and runs the command loop.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
         Storage storage = new Storage("./data/lebron.txt");
-        ArrayList<Task> tasks = new ArrayList<>();
+        ArrayList<Task> tasks;
 
         try {
             tasks = storage.load();
@@ -91,6 +103,12 @@ public class Lebron {
         scanner.close();
     }
 
+    /**
+     * Prints a confirmation message after a task is successfully added.
+     *
+     * @param task The task that was added.
+     * @param count The current number of tasks in the list.
+     */
     private static void printAddedMessage(Task task, int count) {
         System.out.println(line);
         System.out.println("That's what's up king! I've added this to the legacy:");

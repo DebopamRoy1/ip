@@ -26,7 +26,7 @@ public class Parser {
             }
             return LocalDateTime.parse(trimmed, INPUT_FORMAT);
         } catch (DateTimeParseException e) {
-            throw new LebronException("Invalid date format! Use yyy-mm-dd HHmm (e.g., 2026-12-25 1800)");
+            throw new LebronException("Invalid date format! Use yyyy-mm-dd HHmm (e.g., 2026-12-25 1800)");
         }
     }
 

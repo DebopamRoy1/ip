@@ -1,7 +1,16 @@
+/**
+ * An abstract representation of a task in the LeBron system.
+ * Encapsulates the description and completion status of a task.
+ */
 public abstract class Task {
     protected String description;
     protected boolean isDone;
 
+    /**
+     * Initialises a new task with a description.
+     *
+     * @param description The text describing the task.
+     */
     public Task(String description) {
         this.description = description;
         this.isDone = false;
@@ -20,10 +29,16 @@ public abstract class Task {
         }
     }
 
+    /**
+     * Marks the task as completed.
+     */
     public void markAsDone() {
         this.isDone = true;
     }
 
+    /**
+     * Marks the task as not completed yet.
+     */
     public void markAsUndone() {
         this.isDone = false;
     }
