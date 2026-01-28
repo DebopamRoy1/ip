@@ -45,7 +45,7 @@ public class Parser {
      * @throws LebronException If the description is empty.
      */
     public static Todo parseTodo(String input) throws LebronException {
-        String description = input.substring(4).trim(); // Remove "todo"
+        String description = input.substring(4).trim();
         if (description.isEmpty()) {
             throw new LebronException("The description of a todo can't be empty king! Can't build on nothing!");
         }
