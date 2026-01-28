@@ -6,6 +6,7 @@ import lebron.task.Task;
 import lebron.tasklist.TaskList;
 import lebron.ui.Ui;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Main class for the LeBron chatbot, a task tracking system.
@@ -93,6 +94,15 @@ public class Lebron {
                     tasks.add(t);
                     printAddedMessage(t);
                     storage.save(tasks.getAllTasks());
+                } else if (input.startsWith("find")) {
+                    String keyword = input.substring(4).trim();
+                    ArrayList<Task> matches = tasks.findTasks(keyword);
+                    ui.showLine();
+                    ui.showMessage("Here are the matching tasks in your legacy");
+                    for (int i = 0; i < matches.size(); i++) {
+                        ui.showMessage((i + 1) + "." + matches.get(i));
+                    }
+                    ui.showLine();
                 } else {
                     throw new LebronException("Hol' up... I don't know what '" +
                             input + "' means. Check the playbook!");
