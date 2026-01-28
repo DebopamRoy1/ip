@@ -94,7 +94,8 @@ public class Lebron {
                     printAddedMessage(t);
                     storage.save(tasks.getAllTasks());
                 } else {
-                    throw new LebronException("Hol' up... I don't know what '" + input + "' means. Check the playbook!");
+                    throw new LebronException("Hol' up... I don't know what '" +
+                            input + "' means. Check the playbook!");
                 }
             } catch (LebronException e) {
                 ui.showLine();
