@@ -1,119 +1,120 @@
-import java.util.Scanner;
-import java.util.ArrayList;
 import java.io.IOException;
 
 /**
  * Main class for the LeBron chatbot, a task tracking system.
- * This class coordinates the user interface, command parsing and data persistence.
+ * This class coordinates the Storage, Ui, Parser and TaskList to process user commands.
  */
 public class Lebron {
-    private static final String line =
-            "_______________________________________________________________________________";
+    private final Storage storage;
+    private final Ui ui;
+    private TaskList tasks;
 
     /**
-     * The main entry point for the LeBron chatbot.
-     * Initialises storage, loads existing tasks and runs the command loop.
+     * Intialises the chatbot with the necessary components and loads data from the file.
      *
-     * @param args Command line arguments (not used).
+     * @param filePath The path to the file where tasks are saved.
      */
-    public static void main(String[] args) {
-        Storage storage = new Storage("./data/lebron.txt");
-        ArrayList<Task> tasks;
-
+    public Lebron(String filePath) {
+        ui = new Ui();
+        storage = new Storage(filePath);
         try {
-            tasks = storage.load();
-        } catch (IOException e) {
-            tasks = new ArrayList<>();
+            tasks = new TaskList(storage.load());
+        } catch (Exception e) {
+            ui.showError("Couldn't load previous legacy. Starting fresh.");
+            tasks = new TaskList();
         }
-
-        //Greeting
-        System.out.println(line);
-        System.out.println("Yo yo yo, what's up it's your boy LeBron James haha.");
-        System.out.println("Building a legacy, one task at a time. What we workin' on today GOAT?");
-        System.out.println(line);
-
-        Scanner scanner = new Scanner(System.in);
-
-        while (true) {
-            String input = scanner.nextLine();
-
-            try{
-                // Check if the user wants to exit
-                if (input.equalsIgnoreCase("bye")) {
-                    System.out.println(line);
-                    System.out.println("That's all from your boy from Akron, Ohio");
-                    System.out.println("#striveforgreatness #appreciategreatness");
-                    System.out.println(line);
-                    break;
-                } else if (input.equalsIgnoreCase("list")) {
-                    // Show the stored list
-                    System.out.println(line);
-                    System.out.println("Here's how your legacy list is going:");
-                    for (int i = 0; i < tasks.size(); i++) {
-                        System.out.println((i + 1) + ". " + tasks.get(i));
-                    }
-                    System.out.println(line);
-                } else if (input.startsWith("mark")) {
-                    int index = Parser.parseIndex(input, "mark", tasks.size());
-                    tasks.get(index).markAsDone();
-                    System.out.println(line);
-                    System.out.println("Nice! I've marked this as done for the king:");
-                    System.out.println(tasks.get(index));
-                    System.out.println(line);
-                } else if (input.startsWith("unmark")) {
-                    int index = Parser.parseIndex(input, "unmark", tasks.size());
-                    tasks.get(index).markAsUndone();
-                    System.out.println(line);
-                    System.out.println("Ok, I've marked this as not done yet. Keep grinding:");
-                    System.out.println(tasks.get(index));
-                    System.out.println(line);
-                } else if (input.startsWith("delete")) {
-                    int index = Parser.parseDeleteIndex(input, tasks.size());
-                    Task removedTask = tasks.remove(index);
-                    System.out.println(line);
-                    System.out.println("Noted. I've benched this task and removed it from the rotation:");
-                    System.out.println(removedTask);
-                    System.out.println("Now you have " + tasks.size() + " tasks in the list. #StayReady");
-                    System.out.println(line);
-                } else if (input.startsWith("todo")) {
-                    tasks.add(Parser.parseTodo(input));
-                    printAddedMessage(tasks.get(tasks.size() - 1), tasks.size());
-                } else if (input.startsWith("deadline")) {
-                    tasks.add(Parser.parseDeadline(input));
-                    printAddedMessage(tasks.get(tasks.size() - 1), tasks.size());
-                } else if (input.startsWith("event")) {
-                    tasks.add(Parser.parseEvent(input));
-                    printAddedMessage(tasks.get(tasks.size() - 1), tasks.size());
-                } else {
-                    throw new LebronException("Hol' up... I don't know what '" + input + "' means. Check the playbook!");
-                }
-
-                storage.save(tasks);
-
-            } catch (LebronException e){
-                System.out.println(line);
-                System.out.println("ANDDDD ONEE: " + e.getMessage());
-                System.out.println(line);
-            } catch (IOException e) {
-                System.out.println(line);
-                System.out.println("FOUL: I couldn't save your legacy to the disk!");
-                System.out.println(line);
-            }
-        }
-        scanner.close();
     }
 
     /**
-     * Prints a confirmation message after a task is successfully added.
+     * Starts the main execution loop of the chatbot.
+     * Continuously reads user input and executes the corresponding commands until exit.
+     */
+    public void run() {
+        ui.showWelcome();
+        boolean isExit = false;
+
+        while (!isExit) {
+            String input = ui.readCommand();
+            try {
+                if (input.equalsIgnoreCase("bye")) {
+                    ui.showGoodbye();
+                    isExit = true;
+                } else if (input.equalsIgnoreCase("list")) {
+                    ui.showLine();
+                    ui.showMessage("Here's how your legacy list is going:");
+                    for (int i = 0; i < tasks.size(); i++) {
+                        ui.showMessage((i + 1) + ". " + tasks.get(i));
+                    }
+                    ui.showLine();
+                } else if (input.startsWith("mark")) {
+                    int index = Parser.parseIndex(input, "mark", tasks.size());
+                    tasks.get(index).markAsDone();
+                    ui.showLine();
+                    ui.showMessage("Nice! I've marked this as done for the king:");
+                    ui.showMessage("  " + tasks.get(index));
+                    ui.showLine();
+                    storage.save(tasks.getAllTasks());
+                } else if (input.startsWith("unmark")) {
+                    int index = Parser.parseIndex(input, "unmark", tasks.size());
+                    tasks.get(index).markAsUndone();
+                    ui.showLine();
+                    ui.showMessage("Ok, I've marked this as not done yet. Keep grinding:");
+                    ui.showMessage("  " + tasks.get(index));
+                    ui.showLine();
+                    storage.save(tasks.getAllTasks());
+                } else if (input.startsWith("delete")) {
+                    int index = Parser.parseDeleteIndex(input, tasks.size());
+                    Task removed = tasks.delete(index);
+                    ui.showLine();
+                    ui.showMessage("Noted. I've benched this task and removed it from the rotation:");
+                    ui.showMessage("  " + removed);
+                    ui.showMessage("Now you have " + tasks.size() + " tasks in the list. #StayReady");
+                    ui.showLine();
+                    storage.save(tasks.getAllTasks());
+                } else if (input.startsWith("todo")) {
+                    Task t = Parser.parseTodo(input);
+                    tasks.add(t);
+                    printAddedMessage(t);
+                    storage.save(tasks.getAllTasks());
+                } else if (input.startsWith("deadline")) {
+                    Task t = Parser.parseDeadline(input);
+                    tasks.add(t);
+                    printAddedMessage(t);
+                    storage.save(tasks.getAllTasks());
+                } else if (input.startsWith("event")) {
+                    Task t = Parser.parseEvent(input);
+                    tasks.add(t);
+                    printAddedMessage(t);
+                    storage.save(tasks.getAllTasks());
+                } else {
+                    throw new LebronException("Hol' up... I don't know what '" + input + "' means. Check the playbook!");
+                }
+            } catch (LebronException e) {
+                ui.showLine();
+                ui.showError(e.getMessage());
+                ui.showLine();
+            } catch (IOException e) {
+                ui.showLine();
+                ui.showError("I couldn't save your legacy to the disk!");
+                ui.showLine();
+            }
+        }
+    }
+
+    /**
+     * Displays a confirmation that a task has been successfully added.
      *
      * @param task The task that was added.
-     * @param count The current number of tasks in the list.
      */
-    private static void printAddedMessage(Task task, int count) {
-        System.out.println(line);
-        System.out.println("That's what's up king! I've added this to the legacy:");
-        System.out.println("  " + task);
-        System.out.println("Now you have " + count + " tasks in the list. #StayReady");
-        System.out.println(line);
+    private void printAddedMessage(Task task) {
+        ui.showLine();
+        ui.showMessage("That's what's up king! I've added this to the legacy:");
+        ui.showMessage("  " + task);
+        ui.showMessage("Now you have " + tasks.size() + " tasks in the list. #StayReady");
+        ui.showLine();
+    }
+
+    public static void main(String[] args) {
+        new Lebron("./data/lebron.txt").run();
     }
 }
