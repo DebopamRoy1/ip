@@ -1,13 +1,19 @@
 todo borrow book
+deadline return book
 deadline return book /by Sunday
+deadline return book /by 2026-01-31
+event IHG Takraw Finals
 event IHG Takraw Finals /from Wed 9pm /to Wed 11pm
+event IHG Takraw Finals /from 2026-01-31 2100 /to 2026-01-31 2359
 list
 mark 1
 list
 unmark 1
 list
 hello
-deadline project
-event project
 mark 4
+unmark 4
+delete 4
+delete 1
+list
 bye

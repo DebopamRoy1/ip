@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,6 +12,11 @@ import java.util.Scanner;
 public class Storage {
     private String filePath;
 
+    /**
+     * Initialises the storage with a specific file path.
+     *
+     * @param filePath Relative path to the save file.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
@@ -61,10 +67,10 @@ public class Storage {
                 task = new Todo(parts[2]);
                 break;
             case "D":
-                task = new Deadline(parts[2], parts[3]);
+                task = new Deadline(parts[2], LocalDateTime.parse(parts[3]));
                 break;
             case "E":
-                task = new Event(parts[2], parts[3], parts[4]);
+                task = new Event(parts[2], LocalDateTime.parse(parts[3]), LocalDateTime.parse(parts[4]));
                 break;
             default:
                 continue;
