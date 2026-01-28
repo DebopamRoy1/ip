@@ -1,3 +1,10 @@
+package lebron.parser;
+
+import lebron.task.Deadline;
+import lebron.task.Event;
+import lebron.LebronException;
+import lebron.task.Todo;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -34,7 +41,7 @@ public class Parser {
      * Parses a todo command string
      *
      * @param input Raw user input.
-     * @return New Todo object.
+     * @return New lebron.task.Todo object.
      * @throws LebronException If the description is empty.
      */
     public static Todo parseTodo(String input) throws LebronException {
@@ -49,7 +56,7 @@ public class Parser {
      * Parses a deadline command string
      *
      * @param input Raw user input.
-     * @return New Deadline object.
+     * @return New lebron.task.Deadline object.
      * @throws LebronException If description is empty or no deadline is input.
      */
     public static Deadline parseDeadline(String input) throws LebronException {
@@ -67,7 +74,7 @@ public class Parser {
      * Parses an event command string
      *
      * @param input Raw user input.
-     * @return New Event object.
+     * @return New lebron.task.Event object.
      * @throws LebronException If description is empty or format is incorrect.
      */
     public static Event parseEvent(String input) throws LebronException {

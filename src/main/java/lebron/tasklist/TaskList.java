@@ -1,3 +1,7 @@
+package lebron.tasklist;
+
+import lebron.task.Task;
+
 import java.util.ArrayList;
 
 /**
@@ -7,14 +11,14 @@ public class TaskList {
     private final ArrayList<Task> tasks;
 
     /**
-     * Initializes an empty TaskList.
+     * Initializes an empty lebron.tasklist.TaskList.
      */
     public TaskList() {
         this.tasks = new ArrayList<>();
     }
 
     /**
-     * Initialises a TaskList with an existing set of tasks.
+     * Initialises a lebron.tasklist.TaskList with an existing set of tasks.
      *
      * @param tasks The initial ArrayList of tasks.
      */

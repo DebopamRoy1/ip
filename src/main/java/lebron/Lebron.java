@@ -1,8 +1,15 @@
+package lebron;
+
+import lebron.parser.Parser;
+import lebron.storage.Storage;
+import lebron.task.Task;
+import lebron.tasklist.TaskList;
+import lebron.ui.Ui;
 import java.io.IOException;
 
 /**
  * Main class for the LeBron chatbot, a task tracking system.
- * This class coordinates the Storage, Ui, Parser and TaskList to process user commands.
+ * This class coordinates the lebron.storage.Storage, lebron.ui.Ui, lebron.parser.Parser and lebron.tasklist.TaskList to process user commands.
  */
 public class Lebron {
     private final Storage storage;

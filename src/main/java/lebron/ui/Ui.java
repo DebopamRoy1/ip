@@ -1,3 +1,5 @@
+package lebron.ui;
+
 import java.util.Scanner;
 
 /**
@@ -9,7 +11,7 @@ public class Ui {
     private final Scanner scanner;
 
     /**
-     * Initialises the Ui component and its input scanner.
+     * Initialises the lebron.ui.Ui component and its input scanner.
      */
     public Ui() {
         this.scanner = new Scanner(System.in);
