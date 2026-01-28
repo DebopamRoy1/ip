@@ -1,10 +1,12 @@
+package lebron;
+
 /**
  * Represents exceptions specific to the LeBron chatbot.
  * Used to signal invalid inputs during command execution.
  */
 public class LebronException extends Exception {
     /**
-     * Constructs a new LebronException with a specific error message.
+     * Constructs a new lebron.LebronException with a specific error message.
      *
      * @param message The detailed error message describing the invalid input.
      */

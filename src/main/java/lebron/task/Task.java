@@ -1,3 +1,5 @@
+package lebron.task;
+
 /**
  * An abstract representation of a task in the LeBron system.
  * Encapsulates the description and completion status of a task.
