@@ -1,3 +1,4 @@
-T | 1 | homework
-E | 0 | IHG finals | 9pm | 11pm
-D | 0 | ST2334 Quiz | thursday
+T | 1 | Clean room
+D | 0 | quiz | 2026-01-31T00:00
+D | 0 | quiz2 | 2026-01-31T18:00
+E | 0 | exam | 2026-12-25T18:00 | 2026-12-25T22:00

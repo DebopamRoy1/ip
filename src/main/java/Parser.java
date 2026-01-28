@@ -1,8 +1,35 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 /**
  * Decodes user input strings into meaningful commands and task objects.
  * Validates the format of commands and throws exceptions for illegal inputs.
  */
 public class Parser {
+    // Formatter to handle "yyyy-MM-dd HHmm"
+    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+
+    /**
+     * Parses a date-time string. If no time is provided, defaults to midnight (0000).
+     *
+     * @param dateTimeStr The string from the user input.
+     * @return A LocalDateTime object.
+     * @throws LebronException If the format is invalid.
+     */
+    private static LocalDateTime parseDateTime(String dateTimeStr) throws LebronException {
+        try {
+            String trimmed = dateTimeStr.trim();
+            // Check if user provided time. If not, append midnight (0000).
+            if (!trimmed.contains(" ")) {
+                trimmed += " 0000";
+            }
+            return LocalDateTime.parse(trimmed, INPUT_FORMAT);
+        } catch (DateTimeParseException e) {
+            throw new LebronException("Invalid date format! Use yyy-mm-dd HHmm (e.g., 2026-12-25 1800)");
+        }
+    }
+
     /**
      * Parses a todo command string
      *
@@ -31,10 +58,9 @@ public class Parser {
         }
         String content = input.substring(8).trim(); // Remove "deadline"
         String[] parts = content.split(" /by ", 2);
-        if (parts[0].trim().isEmpty()) {
-            throw new LebronException("The description of a deadline can't be empty!");
-        }
-        return new Deadline(parts[0].trim(), parts[1].trim());
+
+        LocalDateTime date = parseDateTime(parts[1].trim());
+        return new Deadline(parts[0].trim(), date);
     }
 
     /**
@@ -46,7 +72,8 @@ public class Parser {
      */
     public static Event parseEvent(String input) throws LebronException {
         if (!input.contains(" /from ") || !input.contains(" /to ")) {
-            throw new LebronException("Events need a start and a end time king! Use: event [desc] /from [start] /to [end]");
+            throw new LebronException("Events need a start and a end time king! " +
+                    "Use: event [desc] /from [start] /to [end]");
         }
         String content = input.substring(5).trim(); // Remove "event"
         String[] parts = content.split(" /from ", 2);
@@ -55,7 +82,11 @@ public class Parser {
         if (parts[0].trim().isEmpty()) {
             throw new LebronException("The description of an event can't be empty!");
         }
-        return new Event(parts[0].trim(), timeParts[0].trim(), timeParts[1].trim());
+
+        LocalDateTime fromDate = parseDateTime(timeParts[0].trim());
+        LocalDateTime toDate = parseDateTime(timeParts[1].trim());
+
+        return new Event(parts[0].trim(), fromDate, toDate);
     }
 
     /**
