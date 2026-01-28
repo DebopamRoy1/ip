@@ -17,7 +17,7 @@ public class Lebron {
     private TaskList tasks;
 
     /**
-     * Intialises the chatbot with the necessary components and loads data from the file.
+     * Initialises the chatbot with the necessary components and loads data from the file.
      *
      * @param filePath The path to the file where tasks are saved.
      */
