@@ -10,7 +10,8 @@ import java.util.ArrayList;
 
 /**
  * Main class for the LeBron chatbot, a task tracking system.
- * This class coordinates the lebron.storage.Storage, lebron.ui.Ui, lebron.parser.Parser and lebron.tasklist.TaskList to process user commands.
+ * This class coordinates the lebron.storage.Storage, lebron.ui.Ui, lebron.parser.Parser and
+ * lebron.tasklist.TaskList to process user commands.
  */
 public class Lebron {
     private final Storage storage;
@@ -104,8 +105,8 @@ public class Lebron {
                     }
                     ui.showLine();
                 } else {
-                    throw new LebronException("Hol' up... I don't know what '" +
-                            input + "' means. Check the playbook!");
+                    throw new LebronException("Hol' up... I don't know what '"
+                            + input + "' means. Check the playbook!");
                 }
             } catch (LebronException e) {
                 ui.showLine();
