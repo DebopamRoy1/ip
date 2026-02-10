@@ -1,13 +1,13 @@
 package lebron.parser;
 
-import lebron.task.Deadline;
-import lebron.task.Event;
-import lebron.LebronException;
-import lebron.task.Todo;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
+import lebron.LebronException;
+import lebron.task.Deadline;
+import lebron.task.Event;
+import lebron.task.Todo;
 
 /**
  * Decodes user input strings into meaningful commands and task objects.
@@ -79,8 +79,8 @@ public class Parser {
      */
     public static Event parseEvent(String input) throws LebronException {
         if (!input.contains(" /from ") || !input.contains(" /to ")) {
-            throw new LebronException("Events need a start and a end time king! " +
-                    "Use: event [desc] /from [start] /to [end]");
+            throw new LebronException("Events need a start and a end time king! "
+                    + "Use: event [desc] /from [start] /to [end]");
         }
         String content = input.substring(5).trim(); // Remove "event"
         String[] parts = content.split(" /from ", 2);

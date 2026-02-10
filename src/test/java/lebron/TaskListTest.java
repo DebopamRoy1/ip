@@ -1,9 +1,11 @@
 package lebron;
 
-import lebron.tasklist.TaskList;
-import lebron.task.Todo;
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
+
+import lebron.task.Todo;
+import lebron.tasklist.TaskList;
 
 public class TaskListTest {
     @Test

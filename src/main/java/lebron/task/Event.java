@@ -7,10 +7,17 @@ import java.time.format.DateTimeFormatter;
  * Represents a task that starts and ends at specific times.
  */
 public class Event extends Task {
+    private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
     protected LocalDateTime from;
     protected LocalDateTime to;
-    private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
 
+    /**
+     * Initialised a new event
+     *
+     * @param description The text describing the task
+     * @param from Start time
+     * @param to End time
+     */
     public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);
         this.from = from;
@@ -19,8 +26,8 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + "(from: " + from.format(OUTPUT_FORMAT) +
-                " to: " + to.format(OUTPUT_FORMAT) + ")";
+        return "[E]" + super.toString() + "(from: " + from.format(OUTPUT_FORMAT)
+                + " to: " + to.format(OUTPUT_FORMAT) + ")";
     }
 
     public String toFileFormat() {
