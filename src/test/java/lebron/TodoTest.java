@@ -1,9 +1,10 @@
 package lebron;
 
-import lebron.task.Todo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
+import lebron.task.Todo;
 
 /**
  * Tests the Todo class functionality.

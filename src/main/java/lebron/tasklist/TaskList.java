@@ -1,8 +1,8 @@
 package lebron.tasklist;
 
-import lebron.task.Task;
-
 import java.util.ArrayList;
+
+import lebron.task.Task;
 
 /**
  * Manages the list of tasks and provides operations to modify it.

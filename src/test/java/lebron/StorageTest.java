@@ -1,9 +1,12 @@
 package lebron;
 
-import lebron.task.Deadline;
-import java.time.LocalDateTime;
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.time.LocalDateTime;
+
+import org.junit.jupiter.api.Test;
+
+import lebron.task.Deadline;
 
 public class StorageTest {
     @Test

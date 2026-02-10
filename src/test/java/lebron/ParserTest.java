@@ -1,9 +1,11 @@
 package lebron;
 
-import lebron.parser.Parser;
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
+
+import lebron.parser.Parser;
 
 /**
  * Tests the Parser class for correct index parsing and error handling.
