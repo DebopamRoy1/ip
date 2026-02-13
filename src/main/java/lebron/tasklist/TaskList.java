@@ -1,6 +1,8 @@
 package lebron.tasklist;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import lebron.task.Task;
 
@@ -76,16 +78,13 @@ public class TaskList {
     /**
      * Finds tasks that contain the given keyword in their description.
      *
-     * @param keyword The string to search for.
+     * @param searchString The string to search for.
      * @return A list of matching tasks.
      */
-    public ArrayList<Task> findTasks(String keyword) {
-        ArrayList<Task> matchingTasks = new ArrayList<>();
-        for (Task task : tasks) {
-            if (task.toString().contains(keyword)) {
-                matchingTasks.add(task);
-            }
-        }
-        return matchingTasks;
+    public List<Task> findTasks(String searchString) {
+        String lowerSearch = searchString.toLowerCase();
+        return tasks.stream()
+                .filter(task -> task.toString().toLowerCase().contains(lowerSearch))
+                .collect(Collectors.toList());
     }
 }

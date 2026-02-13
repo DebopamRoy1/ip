@@ -2,6 +2,9 @@ package lebron;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -88,11 +91,15 @@ public class Lebron extends Application {
     }
 
     private String handleList() {
-        StringBuilder sb = new StringBuilder("Here's how your legacy list is going:\n");
-        for (int i = 0; i < tasks.size(); i++) {
-            sb.append((i + 1)).append(". ").append(tasks.get(i)).append("\n");
+        if (tasks.size() == 0) {
+            return "Your legacy list is empty, King. Let's get to work!";
         }
-        return sb.toString();
+
+        String listBody = IntStream.range(0, tasks.size())
+                .mapToObj(i -> (i + 1) + ". " + tasks.get(i))
+                .collect(Collectors.joining("\n"));
+
+        return "Here's how your legacy list is going:\n" + listBody;
     }
 
     private String handleMark(String input) throws LebronException, IOException {
@@ -138,14 +145,23 @@ public class Lebron extends Application {
         return getAddMessage(t);
     }
 
-    private String handleFind(String input) {
-        String keyword = input.substring(4).trim();
-        ArrayList<Task> matches = tasks.findTasks(keyword);
-        StringBuilder sb = new StringBuilder("Here are the matching tasks in your legacy:\n");
-        for (int i = 0; i < matches.size(); i++) {
-            sb.append((i + 1)).append(".").append(matches.get(i)).append("\n");
+    private String handleFind(String input) throws LebronException {
+        if (input.length() <= 5) {
+            throw new LebronException("Give me a keyword to search the playbook!");
         }
-        return sb.toString();
+
+        String keyword = input.substring(5).trim();
+        List<Task> matches = tasks.findTasks(keyword);
+
+        if (matches.isEmpty()) {
+            return "Nothing in the legacy matches that keyword, King.";
+        }
+
+        String findResults = IntStream.range(0, matches.size())
+                .mapToObj(i -> (i + 1) + ". " + matches.get(i))
+                .collect(Collectors.joining("\n"));
+
+        return "Here are the matching tasks in your legacy:\n" + findResults;
     }
 
     private String getAddMessage(Task task) {
