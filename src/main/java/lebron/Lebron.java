@@ -1,7 +1,9 @@
 package lebron;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -55,44 +57,57 @@ public class Lebron extends Application {
      * @return LeBron's response as a string.
      */
     public String getResponse(String input) {
+        assert tasks != null : "TaskList should be initialised before getting response";
+        assert ui != null : "Ui should be initialised before getting response";
         try {
-            if (input.equalsIgnoreCase("bye")) {
-                return ui.showGoodbye();
-            } else if (input.equalsIgnoreCase("list")) {
-                return handleList();
-            } else if (input.startsWith("mark")) {
-                return handleMark(input);
-            } else if (input.startsWith("unmark")) {
-                return handleUnmark(input);
-            } else if (input.startsWith("delete")) {
-                return handleDelete(input);
-            } else if (input.startsWith("todo")) {
-                return handleTodo(input);
-            } else if (input.startsWith("deadline")) {
-                return handleDeadline(input);
-            } else if (input.startsWith("event")) {
-                return handleEvent(input);
-            } else if (input.startsWith("find")) {
-                return handleFind(input);
-            } else {
-                throw new LebronException("Hol' up... I don't know what '"
-                        + input + "' means. Check the playbook!");
-            }
+            return executeCommand(input);
         } catch (LebronException e) {
             return ui.showError(e.getMessage());
         } catch (IOException e) {
-            return "ERROR: I couldn't save your legacy to the disk!";
+            return ui.showError("ERROR: I couldn't save your legacy to the disk!");
         } catch (Exception e) {
-            return "Unexpected turnover: " + e.getMessage();
+            return ui.showError("Unexpected turnover: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Identifies the command and delegates to specific handlers.
+     */
+    private String executeCommand(String input) throws LebronException, IOException {
+        String trimmedInput = input.trim();
+        String command = input.split(" ")[0].toLowerCase();
+        switch (command) {
+        case "bye":
+            return ui.showGoodbye();
+        case "list":
+            return handleList();
+        case "mark":
+            return handleMark(trimmedInput);
+        case "unmark":
+            return handleUnmark(trimmedInput);
+        case "delete":
+            return handleDelete(trimmedInput);
+        case "todo":
+        case "deadline":
+        case "event":
+            return handleAddTask(trimmedInput, command);
+        case "find":
+            return handleFind(trimmedInput);
+        default:
+            throw new LebronException("Hol' up... I don't know what '" + input + "' means. Check the playbook!");
         }
     }
 
     private String handleList() {
-        StringBuilder sb = new StringBuilder("Here's how your legacy list is going:\n");
-        for (int i = 0; i < tasks.size(); i++) {
-            sb.append((i + 1)).append(". ").append(tasks.get(i)).append("\n");
+        if (tasks.size() == 0) {
+            return "Your legacy list is empty, King!. Let's get to work!";
         }
-        return sb.toString();
+
+        String listBody = IntStream.range(0, tasks.size())
+                .mapToObj(i -> (i + 1) + ". " + tasks.get(i))
+                .collect(Collectors.joining("\n"));
+
+        return "Here's how your legacy list is going:\n" + listBody;
     }
 
     private String handleMark(String input) throws LebronException, IOException {
@@ -117,35 +132,37 @@ public class Lebron extends Application {
                 + "\nNow you have " + tasks.size() + " tasks left. #StayReady";
     }
 
-    private String handleTodo(String input) throws LebronException, IOException {
-        Task t = Parser.parseTodo(input);
-        tasks.add(t);
-        storage.save(tasks.getAllTasks());
-        return getAddMessage(t);
-    }
+    private String handleAddTask(String input, String type) throws LebronException, IOException {
+        Task newTask;
 
-    private String handleEvent(String input) throws LebronException, IOException {
-        Task t = Parser.parseEvent(input);
-        tasks.add(t);
-        storage.save(tasks.getAllTasks());
-        return getAddMessage(t);
-    }
-
-    private String handleDeadline(String input) throws LebronException, IOException {
-        Task t = Parser.parseDeadline(input);
-        tasks.add(t);
-        storage.save(tasks.getAllTasks());
-        return getAddMessage(t);
-    }
-
-    private String handleFind(String input) {
-        String keyword = input.substring(4).trim();
-        ArrayList<Task> matches = tasks.findTasks(keyword);
-        StringBuilder sb = new StringBuilder("Here are the matching tasks in your legacy:\n");
-        for (int i = 0; i < matches.size(); i++) {
-            sb.append((i + 1)).append(".").append(matches.get(i)).append("\n");
+        if (type.equals("todo")) {
+            newTask = Parser.parseTodo(input);
+        } else if (type.equals("deadline")) {
+            newTask = Parser.parseDeadline(input);
+        } else {
+            newTask = Parser.parseEvent(input);
         }
-        return sb.toString();
+
+        tasks.add(newTask);
+        storage.save(tasks.getAllTasks());
+
+        return getAddMessage(newTask);
+    }
+
+    private String handleFind(String input) throws LebronException {
+        if (input.length() <= 5) {
+            throw new LebronException("Give me a keyword to search the playbook!");
+        }
+        String keyword = input.substring(5).trim();
+        List<Task> matches = tasks.findTasks(keyword);
+        if (matches.isEmpty()) {
+            return "Nothing in the legacy matches that keyword, King.";
+        }
+        String findResults = IntStream.range(0, matches.size())
+                .mapToObj(i -> (i + 1) + ". " + matches.get(i))
+                .collect(Collectors.joining("\n"));
+
+        return "Here are the matching tasks in your legacy:\n" + findResults;
     }
 
     private String getAddMessage(Task task) {
