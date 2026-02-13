@@ -54,6 +54,14 @@ public abstract class Task {
         return (isDone ? "1" : "0");
     }
 
+    /**
+     * d
+     * @param newDescription
+     */
+    public void setDescription(String newDescription) {
+        this.description = newDescription;
+    }
+
     @Override
     public String toString() {
         return "[" + getStatusIcon() + "]" + description;

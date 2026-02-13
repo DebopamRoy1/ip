@@ -54,8 +54,6 @@ public class Parser {
         if (description.isEmpty()) {
             throw new LebronException("The description of a todo can't be empty king! Can't build on nothing!");
         }
-
-        String description = input.substring(TODO_PREFIX_LENGTH).trim();
         return new Todo(description);
     }
 
@@ -117,13 +115,17 @@ public class Parser {
     public static int parseIndex(String input, String command, int currentCount) throws LebronException {
         assert input != null;
         try {
-            String indexString = input.substring(command.length()).trim();
-            int index = Integer.parseInt(indexString) - 1;
-
-            validateIndex(index, currentCount);
+            String[] parts = input.split(" ");
+            if (parts.length < 2) {
+                throw new LebronException("Which number in the rotation are we looking at?");
+            }
+            int index = Integer.parseInt(parts[1]) - 1;
+            if (index < 0 || index >= currentCount) {
+                throw new LebronException("That task isn't in the rotation! You only have " + currentCount + " tasks.");
+            }
             return index;
         } catch (NumberFormatException e) {
-            throw new LebronException("You gotta give me a valid number for the " + command + " command!");
+            throw new LebronException("Give me a valid number for the " + command + " command!");
         }
     }
 
@@ -143,5 +145,20 @@ public class Parser {
         if (index < 0 || index >= totalCount) {
             throw new LebronException("That task isn't in the rotation! You have " + totalCount + " tasks.");
         }
+    }
+
+    /**
+     * Parses the new description for an update command.
+     *
+     * @param input Raw user input.
+     * @return The new description string.
+     * @throws LebronException If the input format is incorrect.
+     */
+    public static String parseUpdateDescription(String input) throws LebronException {
+        String[] parts = input.split(" ", 3);
+        if (parts.length < 3) {
+            throw new LebronException("You gotta tell me the number and the new play! Use: update [index] [new desc]");
+        }
+        return parts[2].trim();
     }
 }

@@ -93,6 +93,8 @@ public class Lebron extends Application {
             return handleAddTask(trimmedInput, command);
         case "find":
             return handleFind(trimmedInput);
+        case "update":
+            return handleUpdate(trimmedInput);
         default:
             throw new LebronException("Hol' up... I don't know what '" + input + "' means. Check the playbook!");
         }
@@ -168,6 +170,27 @@ public class Lebron extends Application {
     private String getAddMessage(Task task) {
         return "That's what's up king! I've added this to the legacy:\n  " + task
                 + "\nNow you have " + tasks.size() + " tasks in the list. #StayReady";
+    }
+
+    /**
+     * Handles the update command by modifying an existing task's description.
+     *
+     * @param input The raw user input.
+     * @return A confirmation message of the update.
+     * @throws LebronException If the index is invalid or description is missing.
+     * @throws IOException If the update cannot be saved to disk.
+     */
+    private String handleUpdate(String input) throws LebronException, IOException {
+        int index = Parser.parseIndex(input, "update", tasks.size());
+        String newDescription = Parser.parseUpdateDescription(input);
+
+        Task taskToUpdate = tasks.get(index);
+        String oldDescription = taskToUpdate.toString();
+        taskToUpdate.setDescription(newDescription);
+
+        storage.save(tasks.getAllTasks());
+
+        return "Playbook updated, King!\n  From: " + oldDescription + "\n  To: " + taskToUpdate;
     }
 
     /**
