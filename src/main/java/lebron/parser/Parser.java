@@ -28,8 +28,10 @@ public class Parser {
      * @throws LebronException If the format is invalid.
      */
     private static LocalDateTime parseDateTime(String dateTimeStr) throws LebronException {
+        assert dateTimeStr != null : "Date string cannot be null";
         try {
             String trimmed = dateTimeStr.trim();
+            // Check if user provided time. If not, append midnight (0000).
             if (!trimmed.contains(" ")) {
                 trimmed += " 0000";
             }
@@ -52,6 +54,8 @@ public class Parser {
         if (description.isEmpty()) {
             throw new LebronException("The description of a todo can't be empty king! Can't build on nothing!");
         }
+
+        String description = input.substring(TODO_PREFIX_LENGTH).trim();
         return new Todo(description);
     }
 
@@ -63,6 +67,7 @@ public class Parser {
      * @throws LebronException If description is empty or no deadline is input.
      */
     public static Deadline parseDeadline(String input) throws LebronException {
+        assert input != null;
         if (!input.contains(" /by ")) {
             throw new LebronException(" A deadline needs a time king! Use: deadline [desc] /by [time]");
         }
@@ -81,6 +86,7 @@ public class Parser {
      * @throws LebronException If description is empty or format is incorrect.
      */
     public static Event parseEvent(String input) throws LebronException {
+        assert input != null;
         if (!input.contains(" /from ") || !input.contains(" /to ")) {
             throw new LebronException("Events need a start and a end time king! "
                     + "Use: event [desc] /from [start] /to [end]");
@@ -109,6 +115,7 @@ public class Parser {
      * @throws LebronException If the index is invalid or missing.
      */
     public static int parseIndex(String input, String command, int currentCount) throws LebronException {
+        assert input != null;
         try {
             String indexString = input.substring(command.length()).trim();
             int index = Integer.parseInt(indexString) - 1;

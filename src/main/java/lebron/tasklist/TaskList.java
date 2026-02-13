@@ -82,10 +82,15 @@ public class TaskList {
      * @param searchString The string to search for.
      * @return A list of matching tasks.
      */
-    public List<Task> findTasks(String searchString) {
+    public ArrayList<Task> findTasks(String searchString) {
+        ArrayList<Task> matchingTasks = new ArrayList<>();
         String lowerSearch = searchString.toLowerCase();
-        return tasks.stream()
-                .filter(task -> task.toString().toLowerCase().contains(lowerSearch))
-                .collect(Collectors.toList());
+
+        for (Task task : tasks) {
+            if (task.toString().toLowerCase().contains(lowerSearch)) {
+                matchingTasks.add(task);
+            }
+        }
+        return matchingTasks;
     }
 }
