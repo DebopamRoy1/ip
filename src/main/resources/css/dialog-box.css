@@ -1,25 +1,48 @@
-.label {
-    -fx-background-color: linear-gradient(to bottom right, #00ffbf, #00ddff);
-    -fx-border-color: #d55e00 #009e73 #cc79a7 #0072b2;
-    -fx-border-width: 2px;
-    -fx-background-radius: 1em 1em 0 1em;
-    -fx-border-radius: 1em 1em 0 1em;
+/* Base style for all chat bubbles */
+.chat-label {
+    -fx-padding: 10 15 10 15;
+    -fx-font-family: "Segoe UI", "Arial";
+    -fx-font-size: 13px;
+    -fx-wrap-text: true;
 }
 
-.reply-label {
-    -fx-background-radius: 1em 1em 1em 0;
-    -fx-border-radius: 1em 1em 1em 0;
+/* User's Side - Royal Blue & Yellow */
+.user-label {
+    -fx-background-color: #1D428A;
+    -fx-text-fill: white;
+    -fx-border-color: #FFC72C;
+    -fx-border-width: 2;
+    -fx-background-radius: 20 20 0 20;
+    -fx-border-radius: 20 20 0 20;
+}
+
+/* LeBron's Side - Lakers Purple/Gold */
+.lebron-label {
+    -fx-background-color: #552583;
+    -fx-text-fill: #FDB927;
+    -fx-border-color: #FDB927;
+    -fx-border-width: 2;
+    -fx-background-radius: 0 20 20 20;
+    -fx-border-radius: 0 20 20 20;
+}
+
+.error-label {
+    -fx-background-color: #d32f2f !important;
+    -fx-text-fill: white !important;
+    -fx-border-color: black !important;
+}
+
+.hbox {
+    -fx-background-color: transparent;
 }
 
 #displayPicture {
-    /* Shadow effect on image. */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.5, 5, 5);
-
-    /* Change size of image. */
-    -fx-scale-x: 1;
-    -fx-scale-y: 1;
-
-    /* Rotate image clockwise by degrees. */
-    -fx-rotate: 0;
+    -fx-fit-height: 60;
+    -fx-fit-width: 60;/
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 1);
 }
 
+.chat-label {
+    -fx-background-insets: 0;
+    -fx-margin: 0 10 0 10;
+}

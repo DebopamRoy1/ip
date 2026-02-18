@@ -48,9 +48,16 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         String response = lebron.getResponse(input);
+
+        boolean isError = response.startsWith("ANDDDD ONEE:");
+
+        DialogBox lebronResponse = isError
+                ? DialogBox.getErrorDialog(response, lebronImage)
+                : DialogBox.getLebronDialog(response, lebronImage);
+
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(input, userImage),
-                DialogBox.getLebronDialog(response, lebronImage)
+                lebronResponse
         );
         userInput.clear();
     }
