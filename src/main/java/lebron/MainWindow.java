@@ -31,7 +31,7 @@ public class MainWindow extends AnchorPane {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    /** Injects the Duke instance */
+    /** Injects the Lebron instance */
     public void setLebron(Lebron l) {
         lebron = l;
         String welcomeMessage = lebron.getWelcomeMessage();
@@ -60,5 +60,16 @@ public class MainWindow extends AnchorPane {
                 lebronResponse
         );
         userInput.clear();
+
+        if (input.equalsIgnoreCase("bye")) {
+            userInput.setDisable(true);
+            sendButton.setDisable(true);
+
+            javafx.animation.PauseTransition delay = new javafx.animation.PauseTransition(
+                    javafx.util.Duration.seconds(1.5)
+            );
+            delay.setOnFinished(event -> javafx.application.Platform.exit());
+            delay.play();
+        }
     }
 }
