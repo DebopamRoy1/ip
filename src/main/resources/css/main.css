@@ -38,7 +38,7 @@
 
 .scroll-bar {
     -fx-font-size: 10px;  /* Change width of scroll bar. */
-    -fx-background-color: main-color;
+    -fx-background-color: rgb(237, 255, 242);
 }
 
 .scroll-bar .thumb {

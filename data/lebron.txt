@@ -1,6 +1,7 @@
 D | 0 | read | 2026-12-31T00:00
 T | 0 | win NBA
-E | 0 | read | 2025-12-31T00:00 | 2025-12-31T00:00
+E | 1 | read | 2025-12-31T00:00 | 2025-12-31T00:00
 D | 0 | assignment | 2026-01-31T00:00
 T | 0 | read book
-T | 0 | hello
+T | 0 | chillin
+T | 0 | read book
